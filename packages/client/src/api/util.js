@@ -1,7 +1,8 @@
 import { route } from '../history-hack'
+import { clearStoredAuthToken } from '../stores/auth'
 
 export const relog = () => {
-  localStorage.removeItem('token')
+  clearStoredAuthToken()
   route('/register')
 }
 

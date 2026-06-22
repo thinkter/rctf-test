@@ -1,7 +1,7 @@
 <template>
   <div class="tab-container tabs-center">
     <ul>
-      <li v-if="config.registrationsEnabled || !loggedIn" :class="{ selected: route.path === '/' }">
+      <li :class="{ selected: route.path === '/' }">
         <RouterLink to="/" class="nav-link">Home</RouterLink>
       </li>
       <template v-if="loggedIn">
@@ -31,13 +31,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { loggedIn } from '../stores/auth'
 import { useRoute } from 'vue-router'
 import config from '../config'
 import LogoutButton from './LogoutButton.vue'
 
 const route = useRoute()
-const loggedIn = computed(() => !!localStorage.getItem('token'))
 </script>
 
 <style scoped>

@@ -64,7 +64,7 @@ import { useToast } from '../stores/toast'
 import config from '../config'
 
 const { toast } = useToast()
-const challPageState = JSON.parse(localStorage.getItem('challPageState') || '{}')
+const challPageState = JSON.parse(window.localStorage.getItem('challPageState') || '{}')
 
 const problems = ref<any[] | null>(null)
 const categories = ref<Record<string, boolean>>(challPageState.categories || {})
@@ -94,7 +94,7 @@ onMounted(async () => {
 })
 
 watch([categories, showSolved], () => {
-  localStorage.challPageState = JSON.stringify({ categories: categories.value, showSolved: showSolved.value })
+  window.localStorage.challPageState = JSON.stringify({ categories: categories.value, showSolved: showSolved.value })
 }, { deep: true })
 
 const setSolved = (id: string) => {

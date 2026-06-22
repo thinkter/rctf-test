@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { hasChallsReadPermission } from '../util/permissions'
+import config from '../config'
+import { loggedIn } from '../stores/auth'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -57,16 +59,19 @@ const router = createRouter({
 const loggedOutOnlyPaths = ['/login', '/register', '/recover']
 
 router.beforeEach(to => {
-  const loggedIn = !!localStorage.getItem('token')
+  const isLoggedIn = loggedIn.value
 
-  if (loggedIn && loggedOutOnlyPaths.includes(to.path)) {
+  if (isLoggedIn && loggedOutOnlyPaths.includes(to.path)) {
     return '/profile'
   }
 
-  if (!loggedIn && to.meta.requiresAuth) {
-    return '/'
+  if (!isLoggedIn && to.meta.requiresAuth) {
+    return '/login'
   }
 
+  if (to.path === '/register' && !config.registrationsEnabled) {
+    return isLoggedIn ? '/profile' : '/'
+  }
   if (to.meta.requiresAdmin && !hasChallsReadPermission()) {
     return '/'
   }

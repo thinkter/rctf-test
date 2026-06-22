@@ -91,8 +91,14 @@ onMounted(async () => {
 
 watch(() => route.params.uuid, fetchProfile)
 
-const onProfileUpdate = (updates: any) => {
-  data.value = { ...data.value, ...updates }
+const onProfileUpdate = (updates: { name?: string; email?: string; divisionId?: string; ctftimeId?: string | null }) => {
+  data.value = {
+    ...data.value,
+    name: updates.name === undefined ? data.value.name : updates.name,
+    email: updates.email === undefined ? data.value.email : updates.email,
+    division: updates.divisionId === undefined ? data.value.division : updates.divisionId,
+    ctftimeId: updates.ctftimeId === undefined ? data.value.ctftimeId : updates.ctftimeId,
+  }
 }
 </script>
 

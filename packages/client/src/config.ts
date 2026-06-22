@@ -1,6 +1,19 @@
 // TODO: share
 interface ClientConfig {
   ctfName: string
+  registrationsEnabled: boolean
+  emailEnabled?: boolean
+  startTime: number
+  endTime: number
+  homeContent: string
+  divisions: Record<string, string>
+  defaultDivision?: string
+  ctftime?: {
+    clientId: string
+  }
+  recaptcha?: {
+    protectedActions?: string[]
+  }
 }
 
 // config will not be null by the time the app is mounted

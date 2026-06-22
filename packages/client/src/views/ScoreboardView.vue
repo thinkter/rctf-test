@@ -80,6 +80,7 @@ import AppPagination from '../components/AppPagination.vue'
 import config from '../config'
 import { getScoreboard, getGraph } from '../api/scoreboard'
 import { privateProfile } from '../api/profile'
+import { loggedIn } from '../stores/auth'
 import { useToast } from '../stores/toast'
 
 const { toast } = useToast()
@@ -87,8 +88,9 @@ const route = useRoute()
 const router = useRouter()
 
 const PAGESIZE_OPTIONS = [25, 50, 100]
-const loggedIn = computed(() => !!localStorage.getItem('token'))
-const scoreboardState = JSON.parse(localStorage.getItem('scoreboardPageState') || '{}')
+const readScoreboardState = () =>
+  JSON.parse(window.localStorage.getItem('scoreboardPageState') || '{}')
+const scoreboardState = readScoreboardState()
 
 const profile = ref<any>(null)
 const pageSize = ref<number>(Number(route.query.pageSize) || scoreboardState.pageSize || 100)
@@ -102,14 +104,21 @@ const graphLoadState = ref<'pending' | 'notStarted' | 'loaded'>('pending')
 const selfRow = ref<HTMLElement | null>(null)
 const needsScrollToSelf = ref(false)
 
-onMounted(async () => {
+onMounted(() => {
   document.title = `Scoreboard | ${config.ctfName}`
-  if (loggedIn.value) {
-    const { data, error } = await privateProfile()
-    if (error) toast({ body: error, type: 'error' })
-    else profile.value = data
-  }
 })
+
+watch(loggedIn, async isLoggedIn => {
+  if (!isLoggedIn) {
+    profile.value = null
+    return
+  }
+
+  const { data, error } = await privateProfile()
+  if (!loggedIn.value) return
+  if (error) toast({ body: error, type: 'error' })
+  else profile.value = data
+}, { immediate: true })
 
 const fetchScores = async () => {
   const div = division.value === 'all' ? undefined : division.value
@@ -138,7 +147,7 @@ watch([division, page, pageSize], fetchScores, { immediate: true })
 watch(division, fetchGraph, { immediate: true })
 
 watch([pageSize, division, page], () => {
-  localStorage.setItem(
+  window.localStorage.setItem(
     'scoreboardPageState',
     JSON.stringify({ pageSize: pageSize.value, division: division.value })
   )

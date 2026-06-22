@@ -1,8 +1,9 @@
 import { request } from './util'
 import { route } from '../history-hack'
+import { clearStoredAuthToken, setStoredAuthToken } from '../stores/auth'
 
 export const setAuthToken = ({ authToken }) => {
-  localStorage.token = authToken
+  setStoredAuthToken(authToken)
   route('/profile')
 }
 
@@ -33,8 +34,7 @@ export const login = async ({ teamToken, ctftimeToken }) => {
 }
 
 export const logout = () => {
-  localStorage.removeItem('token')
-  localStorage.removeItem('userPerms')
+  clearStoredAuthToken()
   return route('/')
 }
 
@@ -73,7 +73,7 @@ export const register = async ({
   })
   switch (resp.kind) {
     case 'goodRegister':
-      localStorage.setItem('token', resp.data.authToken)
+      setStoredAuthToken(resp.data.authToken)
       return route('/profile')
     case 'goodVerifySent':
       return {

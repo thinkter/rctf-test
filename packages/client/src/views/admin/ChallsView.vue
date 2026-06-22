@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { v4 as uuid } from 'uuid'
 import AdminProblem from '../../components/admin/AdminProblem.vue'
 import { getChallenges } from '../../api/admin/challs'
@@ -23,7 +23,11 @@ import { hasChallsWritePermission } from '../../util/permissions'
 import config from '../../config'
 
 const problems = ref<any[]>([])
-const newId = computed(() => uuid())
+const newId = ref(uuid())
+
+watch(problems, () => {
+  newId.value = uuid()
+})
 
 const completeProblems = computed(() => {
   if (!hasChallsWritePermission()) return problems.value
@@ -41,9 +45,10 @@ onMounted(async () => {
 
 const updateProblem = ({ problem }: { problem: any }) => {
   let next = completeProblems.value
-  if (problem.id !== newId.value) next = next.filter(p => p.id !== newId.value)
+  if (problem.id !== newId.value) {
+    next = next.filter(p => p.id !== newId.value)
+  }
   problems.value = next.map(p => p.id === problem.id ? { ...p, ...problem } : p)
-    .filter(p => p.id !== newId.value)
 }
 </script>
 

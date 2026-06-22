@@ -92,7 +92,7 @@
   .col-12 { flex: 0 0 100%; max-width: 100%; padding: 0 0.5rem; }
 
   /* ─── Utility ───────────────────────────────────────────── */
-  .u-center { justify-content: center; align-items: center; }
+  .u-center { display: flex; justify-content: center; align-items: center; }
   .u-text-center { text-align: center !important; }
   .u-text-right { text-align: right !important; }
   .u-no-padding { padding: 0 !important; }
@@ -265,6 +265,23 @@
     display: flex;
     align-items: center;
   }
+  .input-control > .icon {
+    position: absolute;
+    left: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    color: #333;
+    pointer-events: none;
+  }
+
+  .input-control > .icon svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    vertical-align: middle;
+  }
 
   .input-contains-icon {
     padding-left: 2.5rem !important;
@@ -365,7 +382,7 @@
     background: #222;
     border-radius: 8px;
     min-width: 300px;
-    max-width: 600px;
+    max-width: initial;
     color: #fff;
     max-height: 90vh;
     overflow-y: auto;

@@ -70,8 +70,12 @@ watch(() => props.page, () => {
 
 <style scoped>
 .empty-solves {
-  padding: 3rem;
+  padding: 3rem 3rem 0;
   text-align: center;
+}
+
+.empty-solves h5 {
+  color: #fff !important;
 }
 
 .clock-icon {

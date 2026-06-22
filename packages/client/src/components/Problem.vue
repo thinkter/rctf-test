@@ -22,7 +22,7 @@
       </div>
 
       <div class="frame__subtitle problem-description">
-        <AppMarkdown :content="problem.description" />
+        <AppMarkdown :content="problem.description" external-links />
       </div>
 
       <form class="form-section" @submit.prevent="handleSubmit">

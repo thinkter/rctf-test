@@ -1,5 +1,5 @@
 <template>
-  <div class="card solves-grid">
+  <div class="card solves-grid" :class="{ 'private-solves': isPrivate }">
     <template v-if="solves.length === 0">
       <div class="title-span">
         <div class="clock-icon"><Clock /></div>
@@ -50,6 +50,14 @@ defineProps<{ solves: any[]; isPrivate?: boolean }>()
 .label { border-bottom: 1px solid #fff; width: 100%; text-align: center; }
 .inline-label { display: none; }
 .clock-icon { width: 60px; margin: auto !important; }
+
+@media (max-width: 1500px) {
+  .private-solves .inline-label { display: initial; border-right: 1px solid #fff; }
+  .private-solves.solves-grid { grid-template-columns: repeat(2, minmax(max-content, 1fr)); }
+  .private-solves.solves-grid > div { margin: 0; }
+  .private-solves .label { display: none; }
+  .private-solves .category-cell { border-top: 1px solid #fff; }
+}
 
 @media (max-width: 800px) {
   .inline-label { display: initial; border-right: 1px solid #fff; }
