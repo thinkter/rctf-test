@@ -52,7 +52,11 @@ import config from '../config'
 
 const props = defineProps<{ graphData: any }>()
 
-const height = 400, stroke = 2, axis = 20, axisGap = 20, day = 86400000
+const height = 400
+const stroke = 2
+const axis = 20
+const axisGap = 20
+const day = 86400000
 const strokeHoverWidth = 12
 
 const svgEl = ref<SVGElement | null>(null)
@@ -91,13 +95,24 @@ const polylines = computed(() => {
   const minX = config.startTime
   const maxX = Math.min(Date.now(), config.endTime)
   let maxY = 0
-  props.graphData.graph.forEach((u: any) => u.points.forEach((p: any) => { if (p.score > maxY) maxY = p.score }))
+  props.graphData.graph.forEach((u: any) =>
+    u.points.forEach((p: any) => {
+      if (p.score > maxY) maxY = p.score
+    })
+  )
 
   return props.graphData.graph.map((user: any) => {
-    const pts = user.points.map((p: any) =>
-      `${timeToX(p.time, minX, maxX)} ${(1 - p.score / maxY) * height}`
-    ).join(',')
-    return { color: uuidToColor(user.id), name: user.name, currentScore: user.points[0]?.score ?? 0, points: pts }
+    const pts = user.points
+      .map(
+        (p: any) => `${timeToX(p.time, minX, maxX)} ${(1 - p.score / maxY) * height}`
+      )
+      .join(',')
+    return {
+      color: uuidToColor(user.id),
+      name: user.name,
+      currentScore: user.points[0]?.score ?? 0,
+      points: pts,
+    }
   })
 })
 
@@ -110,7 +125,10 @@ const labels = computed(() => {
   let labelStart = new Date(minX).setHours(0, 0, 0, 0)
   if (labelStart % step !== 0) labelStart += step
   for (let l = labelStart; l <= maxX; l += step) {
-    result.push({ label: new Date(l).toLocaleDateString(), x: timeToX(l, minX, maxX) })
+    result.push({
+      label: new Date(l).toLocaleDateString(),
+      x: timeToX(l, minX, maxX),
+    })
   }
   return result
 })

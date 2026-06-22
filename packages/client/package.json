@@ -10,7 +10,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "lint": "eslint .",
+    "lint": "eslint . --ext .js,.ts,.vue",
     "typecheck": "tsc -b",
     "build": "vite build",
     "dev": "vite --host 0.0.0.0",

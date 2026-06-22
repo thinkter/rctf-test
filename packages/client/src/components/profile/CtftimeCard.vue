@@ -27,19 +27,25 @@ import CtftimeButton from '../CtftimeButton.vue'
 import { putCtftime, deleteCtftime } from '../../api/auth'
 import { useToast } from '../../stores/toast'
 
-const props = defineProps<{ ctftimeId: string | null }>()
+defineProps<{ ctftimeId: string | null }>()
 const emit = defineEmits<{ update: [{ ctftimeId: string | null }] }>()
 const { toast } = useToast()
 
 const handleCtftimeDone = async ({ ctftimeToken, ctftimeId }: any) => {
   const { kind, message } = await putCtftime({ ctftimeToken })
-  if (kind !== 'goodCtftimeAuthSet') { toast({ body: message, type: 'error' }); return }
+  if (kind !== 'goodCtftimeAuthSet') {
+    toast({ body: message, type: 'error' })
+    return
+  }
   emit('update', { ctftimeId })
 }
 
 const handleRemove = async () => {
   const { kind, message } = await deleteCtftime()
-  if (kind !== 'goodCtftimeRemoved') { toast({ body: message, type: 'error' }); return }
+  if (kind !== 'goodCtftimeRemoved') {
+    toast({ body: message, type: 'error' })
+    return
+  }
   emit('update', { ctftimeId: null })
 }
 </script>

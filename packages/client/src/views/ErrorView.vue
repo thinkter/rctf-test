@@ -11,6 +11,8 @@
 import { onMounted } from 'vue'
 import config from '../config'
 
-const props = defineProps<{ error?: string; message?: string }>()
-onMounted(() => { document.title = `Error | ${config.ctfName}` })
+defineProps<{ error?: string; message?: string }>()
+onMounted(() => {
+  document.title = `Error | ${config.ctfName}`
+})
 </script>

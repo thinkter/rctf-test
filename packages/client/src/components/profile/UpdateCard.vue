@@ -52,19 +52,25 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed } from 'vue'
 import AppForm from '../AppForm.vue'
 import RecaptchaLegalNotice from '../RecaptchaLegalNotice.vue'
 import UserCircle from '../../icons/user-circle.svg'
 import EnvelopeOpen from '../../icons/envelope-open.svg'
-import AddressBook from '../../icons/address-book.svg'
 import config from '../../config'
 import { updateAccount, updateEmail, deleteEmail } from '../../api/profile'
 import { useToast } from '../../stores/toast'
 import { useRecaptcha } from '../../composables/recaptcha'
 
-const props = defineProps<{ name: string; email?: string; divisionId: string; allowedDivisions: string[] }>()
-const emit = defineEmits<{ update: [{ name?: string; email?: string; divisionId?: string }] }>()
+const props = defineProps<{
+  name: string
+  email?: string
+  divisionId: string
+  allowedDivisions: string[]
+}>()
+const emit = defineEmits<{
+  update: [{ name?: string; email?: string; divisionId?: string }]
+}>()
 const { toast } = useToast()
 
 const name = ref(props.name)
@@ -85,7 +91,10 @@ const doUpdate = async () => {
       division: division.value !== props.divisionId ? division.value : undefined,
     })
     isButtonDisabled.value = false
-    if (error !== undefined) { toast({ body: error, type: 'error' }); return }
+    if (error !== undefined) {
+      toast({ body: error, type: 'error' })
+      return
+    }
     toast({ body: 'Profile updated' })
     emit('update', { name: data.user.name, divisionId: data.user.division })
   }
@@ -95,18 +104,25 @@ const doUpdate = async () => {
     let error, data
     if (email.value === '') {
       const res = await deleteEmail()
-      error = res.error; data = res.data
+      error = res.error
+      data = res.data
     } else {
       const recaptchaCode = await requestRecaptchaCode?.()
       const res = await updateEmail({ email: email.value, recaptchaCode })
-      error = res.error; data = res.data
+      error = res.error
+      data = res.data
     }
-    if (error) { toast({ body: error, type: 'error' }); return }
+    if (error) {
+      toast({ body: error, type: 'error' })
+      return
+    }
     toast({ body: data || 'Email updated' })
     emit('update', { email: email.value })
   }
 
-  if (!updated) toast({ body: 'Nothing to update' })
+  if (!updated) {
+    toast({ body: 'Nothing to update' })
+  }
 }
 </script>
 

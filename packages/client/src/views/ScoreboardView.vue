@@ -89,7 +89,6 @@ const router = useRouter()
 const PAGESIZE_OPTIONS = [25, 50, 100]
 const loggedIn = computed(() => !!localStorage.getItem('token'))
 const scoreboardState = JSON.parse(localStorage.getItem('scoreboardPageState') || '{}')
-const qp = new URLSearchParams(route.query ? String(new URLSearchParams(route.query as any)) : '')
 
 const profile = ref<any>(null)
 const pageSize = ref<number>(Number(route.query.pageSize) || scoreboardState.pageSize || 100)
@@ -114,10 +113,17 @@ onMounted(async () => {
 
 const fetchScores = async () => {
   const div = division.value === 'all' ? undefined : division.value
-  const { kind, data } = await getScoreboard({ division: div, offset: (page.value - 1) * pageSize.value, limit: pageSize.value })
+  const { kind, data } = await getScoreboard({
+    division: div,
+    offset: (page.value - 1) * pageSize.value,
+    limit: pageSize.value,
+  })
   scoreLoadState.value = kind === 'badNotStarted' ? 'notStarted' : 'loaded'
   if (kind !== 'goodLeaderboard') return
-  scores.value = data.leaderboard.map((e: any, i: number) => ({ ...e, rank: i + 1 + (page.value - 1) * pageSize.value }))
+  scores.value = data.leaderboard.map((e: any, i: number) => ({
+    ...e,
+    rank: i + 1 + (page.value - 1) * pageSize.value,
+  }))
   totalItems.value = data.total
 }
 
@@ -132,13 +138,24 @@ watch([division, page, pageSize], fetchScores, { immediate: true })
 watch(division, fetchGraph, { immediate: true })
 
 watch([pageSize, division, page], () => {
-  localStorage.setItem('scoreboardPageState', JSON.stringify({ pageSize: pageSize.value, division: division.value }))
+  localStorage.setItem(
+    'scoreboardPageState',
+    JSON.stringify({ pageSize: pageSize.value, division: division.value })
+  )
   if (page.value !== 1 || route.query.page) {
-    router.replace({ query: { page: String(page.value), division: division.value, pageSize: String(pageSize.value) } })
+    router.replace({
+      query: {
+        page: String(page.value),
+        division: division.value,
+        pageSize: String(pageSize.value),
+      },
+    })
   }
 })
 
-const onDivisionChange = () => { page.value = 1 }
+const onDivisionChange = () => {
+  page.value = 1
+}
 const onPageSizeChange = (e: Event) => {
   const newSize = Number((e.target as HTMLSelectElement).value)
   const newPage = Math.floor(((page.value - 1) * pageSize.value) / newSize) + 1
@@ -146,11 +163,16 @@ const onPageSizeChange = (e: Event) => {
   page.value = newPage
 }
 
-const setPage = (p: number) => { page.value = p }
+const setPage = (p: number) => {
+  page.value = p
+}
 
 const isUserOnCurrentScoreboard = computed(() =>
-  loggedIn.value && profile.value !== null && profile.value.globalPlace !== null &&
-  (division.value === 'all' || Number.parseInt(division.value) === profile.value.division)
+  loggedIn.value &&
+  profile.value !== null &&
+  profile.value.globalPlace !== null &&
+  (division.value === 'all' ||
+    Number.parseInt(division.value) === profile.value.division)
 )
 
 const isSelfVisible = computed(() => {
@@ -159,15 +181,20 @@ const isSelfVisible = computed(() => {
 })
 
 const scrollToSelf = () => {
-  if (selfRow.value) selfRow.value.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  if (selfRow.value) {
+    selfRow.value.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }
 }
 
 const goToSelfPage = () => {
   if (!isUserOnCurrentScoreboard.value) return
   const place = division.value === 'all' ? profile.value.globalPlace : profile.value.divisionPlace
   page.value = Math.floor((place - 1) / pageSize.value) + 1
-  if (isSelfVisible.value) scrollToSelf()
-  else needsScrollToSelf.value = true
+  if (isSelfVisible.value) {
+    scrollToSelf()
+  } else {
+    needsScrollToSelf.value = true
+  }
 }
 
 watch(isSelfVisible, (visible) => {

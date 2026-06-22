@@ -1,43 +1,48 @@
 module.exports = {
   env: {
     browser: true,
+    'vue/setup-compiler-macros': true,
   },
-  extends: [
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'standard-jsx',
-    'prettier',
-  ],
+  globals: {
+    defineOptions: 'readonly',
+  },
+  extends: ['plugin:vue/vue3-recommended', 'prettier'],
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    tsconfigRootDir: __dirname,
+    project: ['./tsconfig.json', './tsconfig.playwright.json'],
+    extraFileExtensions: ['.vue'],
+  },
   plugins: [],
   rules: {
     radix: 'off',
-    'react/react-in-jsx-scope': 'off', // We use ProvidePlugin
-    'react/prop-types': 'off', // We have TypeScript and don't care about JS interop
-    'react/jsx-handler-names': 'off', // no
-  },
-  parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./tsconfig.json', './tsconfig.playwright.json'],
+    'vue/multi-word-component-names': 'off',
+    'vue/attribute-hyphenation': 'off',
+    'vue/attributes-order': 'off',
+    'vue/no-v-html': 'off',
+    'vue/require-explicit-emits': 'off',
+    'vue/v-on-event-hyphenation': 'off',
   },
   overrides: [
     {
-      files: ['lib/**/*', '*.config*.[jt]s?(x)'],
+      files: ['.eslintrc.js', 'lib/**/*', '*.config*.[jt]s?(x)'],
       parser: 'espree',
+      parserOptions: {
+        project: null,
+        parser: null,
+      },
+    },
+    {
+      files: ['*.vue', 'src/**/*.vue'],
+      rules: {
+        'prettier/prettier': 'off',
+      },
     },
     {
       files: ['*.test.[jt]s?(x)'],
-      extends: [
-        'plugin:jest/recommended',
-        'plugin:testing-library/react',
-        'plugin:jest-dom/recommended',
-      ],
+      extends: ['plugin:jest/recommended', 'plugin:jest-dom/recommended'],
     },
   ],
-  settings: {
-    react: {
-      // Set a recent React version to satisfy the plugin
-      version: '16.13.1',
-    },
-  },
   ignorePatterns: ['index.js', 'index.d.ts'],
 }
