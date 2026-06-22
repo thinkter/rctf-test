@@ -7,7 +7,7 @@
     "jsx": "preserve",
     "jsxImportSource": "theme-ui",
     "noEmit": true,
-    "types": ["react", "webpack-env", "jest", "@testing-library/jest-dom"]
+    "types": ["react", "jest", "@testing-library/jest-dom"]
   },
   "include": ["src/**/*", ".storybook/**/*"]
 }

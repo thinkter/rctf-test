@@ -27,7 +27,7 @@ database:
 Then, when you need to run migrations, run:
 
 ```shell
-yarn migrate
+pnpm --filter @rctf/server migrate
 ```
 
 Alternatively, you can set `database.migrate` or `RCTF_DATABASE_MIGRATE` to `only` and run rCTF. rCTF will exit when migrations are complete.

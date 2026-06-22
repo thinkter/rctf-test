@@ -2,7 +2,7 @@
 
 Manual installation of rCTF is useful to develop and modify the project.
 
-To run rCTF locally, you'll need [node](https://nodejs.org/) and [yarn](https://yarnpkg.com/).
+To run rCTF locally, you'll need [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/). The repository pins the pnpm version through Node's package manager metadata, so Corepack-enabled Node installations can activate the correct pnpm release automatically.
 
 Clone the rCTF repository:
 

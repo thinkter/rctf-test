@@ -2,7 +2,7 @@
 
 ## Workflow
 
-Development primarily occurs with `yarn`. While there are docker containers available, these are meant more for production environments.
+Development primarily occurs with `pnpm`. While there are docker containers available, these are meant more for production environments.
 
 You should first clone the repository and perform first-time setup:
 
@@ -37,17 +37,17 @@ EOT
 Then, build all the packages once so that all the required bundles get created:
 
 ```bash
-yarn
-yarn workspace @rctf/api-types build
-yarn workspace @rctf/server build
-yarn workspace @rctf/client build
+pnpm install
+pnpm --filter @rctf/api-types build
+pnpm --filter @rctf/server build
+pnpm --filter @rctf/client build
 ```
 
 After that, you can start up a local development environment in the future by running the following commands:
 
 ```bash
 docker compose -f docker-compose.development.yml up -d
-yarn dev
+pnpm dev
 ```
 
 These will automatically watch the filesystem for changes, and restart when needed.
@@ -56,8 +56,8 @@ These will automatically watch the filesystem for changes, and restart when need
 
 Before committing your changes, please:
 
-- run `yarn lint` and `yarn lint --fix` to fix any linting errors
-- run `yarn test` to ensure there are no regressions
+- run `pnpm lint` and `pnpm lint --fix` to fix any linting errors
+- run `pnpm test` to ensure there are no regressions
 
 ## Commits
 
@@ -86,17 +86,17 @@ rCTF uses [Playwright](https://playwright.dev/) for end-to-end testing. The `.en
 
 ```bash
 cd packages/client
-npx playwright install
+pnpm exec playwright install
 ```
 
 2. **Run all E2E tests**:
 
 ```bash
-npx playwright test
+pnpm exec playwright test
 ```
 
 3. **Run a specific test file**:
 
 ```bash
-npx playwright test tests/auth.spec.ts
+pnpm exec playwright test tests/auth.spec.ts
 ```

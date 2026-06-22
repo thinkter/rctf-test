@@ -8,11 +8,10 @@
   "scripts": {
     "lint": "eslint .",
     "typecheck": "tsc -b packages",
-    "build": "yarn workspaces foreach -Apt run build",
-    "dev": "concurrently -k -t \"HH:mm:ss.SSS\" -p \"[{time}]\" -c \"cyan,green,blue\" \"yarn workspace @rctf/client dev\" \"yarn workspace @rctf/server watch-server\" \"yarn workspace @rctf/server watch-ts --preserveWatchOutput\"",
+    "build": "pnpm -r --workspace-concurrency=1 run build",
+    "dev": "concurrently -k -t \"HH:mm:ss.SSS\" -p \"[{time}]\" -c \"cyan,green,blue\" \"pnpm --filter @rctf/client dev\" \"pnpm --filter @rctf/server watch-server\" \"pnpm --filter @rctf/server watch-ts --preserveWatchOutput\"",
     "test": "jest",
-    "test:report": "yarn test --coverage",
-    "packall": "yarn workspaces foreach -Apt exec yarn pack",
+    "test:report": "pnpm test --coverage",
     "postinstall": "husky install"
   },
   "devDependencies": {
@@ -67,9 +66,13 @@
     "url": "https://github.com/redpwn/rctf/issues"
   },
   "homepage": "https://rctf.redpwn.net",
-  "resolutions": {
-    "json-schema": "^0.4.0",
-    "loader-utils": "^1.4.1"
+  "pnpm": {
+    "overrides": {
+      "json-schema": "^0.4.0",
+      "loader-utils": "^1.4.1",
+      "pg-protocol": "1.5.0",
+      "babel-preset-current-node-syntax": "1.0.1"
+    }
   },
-  "packageManager": "yarn@4.9.2"
+  "packageManager": "pnpm@10.12.4"
 }

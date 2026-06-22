@@ -15,7 +15,7 @@
   "scripts": {
     "lint": "eslint .",
     "build": "node build",
-    "prepack": "yarn build"
+    "prepack": "pnpm build"
   },
   "devDependencies": {
     "@babel/core": "7.16.0",

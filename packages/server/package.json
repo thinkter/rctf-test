@@ -12,14 +12,14 @@
     "lint": "eslint .",
     "typecheck": "tsc -b",
     "start": "node --enable-source-maps --unhandled-rejections=strict dist/index.js",
-    "migrate": "RCTF_DATABASE_MIGRATE=only yarn start",
-    "build": "tsc -b src && yarn copy-static",
+    "migrate": "RCTF_DATABASE_MIGRATE=only pnpm start",
+    "build": "tsc -b src && pnpm copy-static",
     "watch-server": "nodemon --enable-source-maps --unhandled-rejections=strict dist/index.js | pino-pretty -c -t",
     "watch-ts": "tsc -b -w src",
-    "dev": "concurrently -k -t \"HH:mm:ss.SSS\" -p \"[{time}]\" -c \"green,red\" \"yarn:watch-*\"",
+    "dev": "concurrently -k -t \"HH:mm:ss.SSS\" -p \"[{time}]\" -c \"green,red\" \"pnpm watch-server\" \"pnpm watch-ts\"",
     "test": "jest",
     "copy-static": "cpy --cwd=src/ \"**/*\" \"!**/*.{j,t}s\" ../dist --parents",
-    "prepack": "yarn build"
+    "prepack": "pnpm build"
   },
   "nodemonConfig": {
     "watch": [
@@ -29,9 +29,9 @@
   },
   "dependencies": {
     "@google-cloud/storage": "5.15.3",
-    "@rctf/api-types": "3.0.0-alpha.0",
-    "@rctf/client": "3.0.0-alpha.0",
-    "@rctf/migrations": "3.0.0-alpha.0",
+    "@rctf/api-types": "workspace:3.0.0-alpha.0",
+    "@rctf/client": "workspace:3.0.0-alpha.0",
+    "@rctf/migrations": "workspace:3.0.0-alpha.0",
     "aws-sdk": "2.1018.0",
     "data-uri-to-buffer": "3.0.1",
     "deepmerge": "4.2.2",

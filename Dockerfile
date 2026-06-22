@@ -2,8 +2,7 @@ FROM node:24-slim AS prepare
 WORKDIR /app
 
 COPY packages ./packages
-COPY package.json yarn.lock .yarnrc.yml /prepared/
-COPY .yarn /prepared/.yarn
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml /prepared/
 
 RUN find packages -maxdepth 2 -mindepth 2 -name package.json -exec dirname /prepared/'{}' ';' | xargs mkdir -p && \
     find packages -maxdepth 2 -mindepth 2 -name package.json -exec cp '{}' /prepared/'{}' ';'
@@ -12,16 +11,11 @@ FROM node:24-slim AS build
 WORKDIR /build
 
 COPY --from=prepare /prepared ./
-RUN yarn install --immutable
+RUN corepack enable && pnpm install --frozen-lockfile
 
 COPY . .
 
-RUN mkdir -p /app/packages && \
-    yarn packall --out /app/packages/%s-v%v.tgz && \
-    cp -r yarn.lock .yarnrc.yml .yarn /app && \
-    yarn node scripts/make-docker-package-json.js /app/packages /app/package.json
-WORKDIR /app
-RUN yarn workspaces focus --production --all
+RUN pnpm build && pnpm --filter @rctf/server --prod deploy --legacy /app
 
 FROM node:24-slim AS run
 WORKDIR /app
