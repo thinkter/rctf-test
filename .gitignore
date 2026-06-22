@@ -9,6 +9,7 @@ node_modules
 /packages/*/package.tgz
 
 dist
+*.tsbuildinfo
 /.env
 /data
 /rctf.d/*

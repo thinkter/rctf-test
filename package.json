@@ -72,7 +72,11 @@
       "loader-utils": "^1.4.1",
       "pg-protocol": "1.5.0",
       "babel-preset-current-node-syntax": "1.0.1"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "vue-demi"
+    ]
   },
   "packageManager": "pnpm@10.12.4"
 }
