@@ -1,16 +1,13 @@
-import type { FunctionComponent, SVGProps } from 'react'
+/* eslint-disable @typescript-eslint/triple-slash-reference */
+/// <reference types="vite/client" />
+/// <reference types="vite-svg-loader" />
 
-declare global {
-  namespace NodeJS {
-    interface Process {
-      env: {
-        NODE_ENV: string
-      }
-    }
-  }
-}
-
-declare module '*.svg' {
-  const Component: FunctionComponent<SVGProps<SVGSVGElement>>
-  export default Component
+declare module '*.vue' {
+  import type { DefineComponent } from 'vue'
+  const component: DefineComponent<
+    Record<string, unknown>,
+    Record<string, unknown>,
+    unknown
+  >
+  export default component
 }

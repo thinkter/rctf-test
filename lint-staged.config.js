@@ -16,7 +16,12 @@ module.exports = {
   'packages/*/**/*.ts?(x)': files =>
     Array.from(new Set(files.map(extractPackage)))
       .filter(packageDir => tsPackages.includes(packageDir))
-      .map(packageDir => `tsc -b ${packageDir}`),
+      .map(packageDir => {
+        const localTsc = `${packageDir}node_modules/typescript/bin/tsc`
+        const fs = require('fs')
+        const tsc = fs.existsSync(localTsc) ? `node ${localTsc}` : 'tsc'
+        return `${tsc} -b ${packageDir}`
+      }),
   '*.({j,t}s?(x)|md?(x)|json|y?(a)ml)': 'prettier --write',
   'pnpm-lock.yaml': () => 'pnpm dedupe',
 }

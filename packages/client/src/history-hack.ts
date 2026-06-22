@@ -1,7 +1,9 @@
-import type { NavigateFunction } from 'react-router-dom'
-
-export const navigateRef = { current: null as unknown as NavigateFunction }
+import { router } from './router'
 
 export const route = (path: string, replace = false) => {
-  navigateRef.current(path, { replace })
+  if (replace) {
+    void router.replace(path)
+  } else {
+    void router.push(path)
+  }
 }

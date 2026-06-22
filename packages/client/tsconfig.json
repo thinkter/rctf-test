@@ -2,12 +2,12 @@
   "extends": "../tsconfig-base.json",
   "compilerOptions": {
     "module": "esnext",
-    "target": "es5",
-    "lib": ["es6", "dom"],
+    "target": "es2020",
+    "lib": ["es2020", "dom"],
     "jsx": "preserve",
-    "jsxImportSource": "theme-ui",
     "noEmit": true,
-    "types": ["react", "jest", "@testing-library/jest-dom"]
+    "skipLibCheck": true,
+    "types": ["node"]
   },
-  "include": ["src/**/*", ".storybook/**/*"]
+  "include": ["src/**/*"]
 }
